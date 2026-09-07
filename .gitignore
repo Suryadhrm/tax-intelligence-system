@@ -1,0 +1,17 @@
+# env & secrets
+.env
+*.pem
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+# node
+node_modules/
+dist/
+# artifacts
+ml/artifacts/*.pkl
+ml/artifacts/*.joblib
+# os
+.DS_Store
+Thumbs.db

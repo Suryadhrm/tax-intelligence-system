@@ -1,0 +1,1 @@
+alembic init placeholder — jalankan alembic init alembic lalu edit env.py untuk PostGIS
