@@ -1,22 +1,33 @@
 version: "3.9"
+
 services:
   db:
-    image: postgis/postgis:15-3.4
+    image: postgis/postgis:16-3.4
     environment:
-      POSTGRES_DB: taxpadel
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports: ["5432:5432"]
-    volumes: [pgdata:/var/lib/postgresql/data]
+      POSTGRES_USER: tis_user
+      POSTGRES_PASSWORD: tis_password
+      POSTGRES_DB: tax_intelligence_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
   backend:
     build: ./backend
-    ports: ["8000:8000"]
-    env_file: .env
-    depends_on: [db]
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    env_file: ./backend/.env
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+
   frontend:
     build: ./frontend
-    ports: ["5173:5173"]
-    depends_on: [backend]
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+
 volumes:
-  pgdata:
+  db_data:

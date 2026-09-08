@@ -1,0 +1,765 @@
+﻿PRODUCT REQUIREMENTS DOCUMENT
+Tax Intelligence System
+Sistem Analitik Potensi Pendapatan dan Deteksi Anomali
+Pajak PBJT Venue Padel Jakarta Barat
+Progressive Web Application (PWA)
+ 
+Atribut
+	Keterangan
+	Jenis Dokumen
+	Product Requirements Document (PRD)
+	Jenis Proyek
+	Proyek Magang (Internship Project)
+	Periode Proyek
+	1 September 2026 - 4 Desember 2026 (±14 Minggu)
+	Instansi Mitra
+	Badan Pendapatan Daerah (Bappenda)
+	Status Dokumen
+	Final - v1.0
+	Tanggal Penyusunan
+	7 September 2026
+	
+
+ 
+Daftar Isi
+1. Product Overview
+2. Problem Statement
+3. Product Goals & Objectives
+4. Product Scope
+5. User Persona
+6. User Journey Map
+7. Functional Requirements
+8. Machine Learning Requirements
+9. Data Requirements
+10. System Architecture
+11. Database Design
+12. UI/UX Requirement
+13. Non-Functional Requirement
+14. Development Roadmap
+15. MVP Definition
+16. Future Development
+
+
+ 
+1. Product Overview
+1.1 Nama Produk
+Tax Intelligence System: Sistem Analitik Potensi Pendapatan dan Deteksi Anomali Pajak PBJT Venue Padel Jakarta Barat.
+1.2 Deskripsi Produk
+Tax Intelligence System adalah Progressive Web Application (PWA) yang dirancang untuk membantu Badan Pendapatan Daerah (Bappenda) dalam melakukan estimasi potensi penerimaan Pajak Barang dan Jasa Tertentu (PBJT) pada sektor usaha venue padel di wilayah Jakarta Barat. Sistem mengintegrasikan data operasional venue, data spasial Zona Nilai Tanah (ZNT), model machine learning untuk estimasi omzet, mesin perhitungan PBJT, mesin deteksi anomali pembayaran pajak, serta modul analitik keberlanjutan usaha (business sustainability) berbasis tren historis. Seluruh hasil analisis disajikan melalui dashboard interaktif berbasis peta (GIS) dan grafik untuk mendukung pengambilan keputusan pengawasan pajak yang berbasis data (data-driven tax supervision).
+1.3 Visi Produk
+Menjadi sistem pendukung keputusan (decision support system) berbasis data spasial dan machine learning yang membantu Bappenda mengoptimalkan pengawasan kepatuhan pajak PBJT pada sektor usaha rekreasi olahraga, dimulai dari venue padel di Jakarta Barat, dengan potensi replikasi ke sektor usaha sejenis dan wilayah lain di masa mendatang.
+1.4 Masalah yang Diselesaikan
+Sistem ini menjawab keterbatasan pengawasan pajak PBJT yang saat ini sangat bergantung pada laporan mandiri (self-reported) wajib pajak, tanpa adanya mekanisme verifikasi independen berbasis estimasi potensi ekonomi riil dari karakteristik operasional dan lokasi usaha.
+1.5 Target Pengguna
+Target Pengguna
+	Peran dalam Sistem
+	Admin Bappenda
+	Mengelola data master, memantau ringkasan potensi pajak wilayah, dan mengambil keputusan strategis pengawasan.
+	Petugas Pengawasan Pajak
+	Menggunakan hasil anomaly score dan ranking wajib pajak untuk memprioritaskan kunjungan/pemeriksaan lapangan.
+	Pimpinan/Pengambil Kebijakan (Viewer)
+	Melihat ringkasan dashboard eksekutif untuk kebutuhan pelaporan dan pengambilan kebijakan (akses terbatas, read-only).
+	1.6 Value Proposition
+Kondisi Sebelum Sistem
+	Kondisi Setelah Implementasi Sistem
+	Estimasi potensi pajak dilakukan manual dan tidak konsisten.
+	Estimasi potensi omzet dan PBJT dihasilkan otomatis dari model machine learning berbasis data operasional dan spasial.
+	Tidak ada mekanisme deteksi dini ketidaksesuaian pembayaran pajak.
+	Anomaly score dan risk category dihasilkan otomatis untuk setiap wajib pajak.
+	Prioritas pengawasan lapangan bersifat subjektif.
+	Ranking wajib pajak berbasis risiko membantu prioritisasi pengawasan yang objektif dan terukur.
+	Tidak ada visibilitas terhadap prospek keberlanjutan usaha wajib pajak.
+	Sustainability Score dan business outlook memberi indikasi awal risiko penurunan usaha yang berdampak pada penerimaan pajak.
+	Data venue, spasial, dan pajak tersebar dan tidak terintegrasi.
+	Seluruh data terintegrasi dalam satu basis data dan disajikan melalui dashboard GIS interaktif.
+	2. Problem Statement
+2.1 Kondisi Sistem Saat Ini
+Pengawasan pajak PBJT pada sektor usaha venue padel saat ini masih bersifat administratif dan pasif. Bappenda menerima laporan omzet dan pembayaran pajak dari wajib pajak tanpa memiliki alat bantu independen untuk memvalidasi kewajaran nilai yang dilaporkan terhadap potensi ekonomi riil usaha tersebut.
+2.2 Masalah Utama
+•     Tidak tersedia estimasi potensi omzet yang independen dari laporan wajib pajak.
+•     Tidak ada integrasi antara lokasi usaha dengan data nilai ekonomi lokasi (Zona Nilai Tanah).
+•     Tidak ada mekanisme sistematis untuk mendeteksi anomali/ketidaksesuaian pembayaran pajak.
+•     Prioritas pengawasan lapangan ditentukan tanpa dasar data kuantitatif yang memadai.
+•     Tidak ada visibilitas terhadap tren keberlanjutan usaha wajib pajak yang berdampak pada proyeksi penerimaan pajak jangka menengah.
+ 
+2.3 Pain Point Pengguna
+Pengguna
+	Pain Point
+	Admin Bappenda
+	Kesulitan memantau potensi pajak seluruh wilayah secara agregat dan real-time; laporan manual memakan waktu.
+	Petugas Pengawasan Pajak
+	Tidak memiliki daftar prioritas wajib pajak berisiko tinggi; kunjungan lapangan dilakukan tanpa data pendukung yang kuat.
+	2.4 Keterbatasan Proses Manual
+•     Proses estimasi dan verifikasi memakan waktu lama karena dilakukan satu per satu secara manual.
+•     Rentan terhadap bias subjektif petugas dalam menentukan wajib pajak yang perlu diperiksa.
+•     Tidak dapat melakukan analisis skala besar (puluhan-ratusan venue) secara efisien.
+•     Tidak memiliki jejak audit (audit trail) yang terdokumentasi secara digital.
+ 
+2.5 Dampak Bisnis
+•     Potensi kebocoran penerimaan daerah (revenue leakage) akibat underreporting yang tidak terdeteksi.
+•     Alokasi sumber daya pengawasan yang tidak efisien karena tidak berbasis prioritas risiko.
+•     Minimnya data pendukung untuk perencanaan kebijakan pajak daerah berbasis bukti (evidence-based policy).
+3. Product Goals & Objectives
+3.1 Business Goals
+•     Meningkatkan kepatuhan pajak PBJT sektor venue padel melalui pengawasan berbasis data.
+•     Mengoptimalkan potensi penerimaan daerah dengan mendeteksi selisih antara potensi dan realisasi pembayaran pajak.
+•     Menyediakan dasar kuantitatif untuk prioritisasi pengawasan lapangan sehingga sumber daya petugas digunakan lebih efisien.
+3.2 User Goals
+•     Admin Bappenda dapat memantau kondisi potensi pajak seluruh venue dalam satu dashboard terintegrasi.
+•     Petugas Pengawasan Pajak dapat memperoleh daftar wajib pajak berisiko tinggi beserta alasan/faktor pendukungnya secara cepat.
+3.3 Technical Goals
+•     Membangun pipeline machine learning yang dapat diulang (reproducible) untuk estimasi omzet dan deteksi anomali.
+•     Mengintegrasikan data spasial (GIS/ZNT) dengan data operasional venue secara konsisten.
+•     Membangun arsitektur modular (frontend, backend, ML service terpisah) agar mudah dikembangkan lebih lanjut pasca-magang.
+3.4 Success Metrics
+Indikator
+	Target pada Akhir Magang (Minggu ke-14)
+	Metode Pengukuran
+	Cakupan data venue yang terintegrasi
+	Minimal 80% dari sampel venue padel Jakarta Barat yang tersedia
+	Jumlah baris data venue tervalidasi pada database
+	Akurasi model prediksi omzet
+	MAE dan RMSE pada tingkat yang wajar sesuai skala data; R2 > 0,6 pada data uji
+	Evaluasi model pada test set
+	Fungsi deteksi anomali
+	Sistem mampu mengklasifikasikan seluruh venue ke dalam 3 kategori risiko
+	Pengujian fungsional pada seluruh data venue
+	Waktu respons dashboard
+	Halaman utama dashboard termuat dalam < 3 detik pada kondisi data uji
+	Pengujian performa (load testing sederhana)
+	Kelengkapan modul MVP
+	Seluruh fitur Must Have pada Section 15 selesai dan lulus uji fungsional
+	User Acceptance Test (UAT) internal
+	4. Product Scope
+4.1 MVP Scope (Wajib Selesai dalam 14 Minggu)
+•     Data Management — pengelolaan data venue padel (input, edit, hapus, impor).
+•     GIS Integration — pemetaan lokasi venue dan integrasi Zona Nilai Tanah (ZNT).
+•     Revenue Estimation — estimasi potensi omzet bulanan berbasis machine learning.
+•     PBJT Estimation — perhitungan estimasi PBJT berdasarkan omzet hasil estimasi.
+•     Anomaly Detection — deteksi ketidaksesuaian antara potensi dan pembayaran aktual.
+•     Dashboard — visualisasi hasil analisis (ringkasan, grafik, peta, detail venue).
+•     Business Sustainability Analytics (sederhana) — Should Have, hanya diimplementasikan apabila data historis memadai; berbasis analisis tren, bukan model kompleks.
+ 
+4.2 Future Development (Di Luar Cakupan Magang)
+•     Integrasi langsung dengan API resmi Bappenda/Pemprov DKI Jakarta.
+•     Real-time monitoring transaksi venue (mis. integrasi sistem booking venue).
+•     AI assistant pajak berbasis conversational AI untuk petugas.
+•     Model prediksi penerimaan pajak daerah tingkat agregat/wilayah.
+•     Survival analysis formal untuk estimasi probabilitas keberlangsungan usaha.
+•     Ekspansi ke sektor PBJT lain (mis. karaoke, kolam renang, gym, bioskop).
+ 
+4.3 Prioritas Fitur (MoSCoW)
+Prioritas
+	Fitur
+	Must Have
+	Data management, GIS & ZNT integration, revenue estimation, PBJT estimation, anomaly detection, dashboard risiko
+	Should Have
+	Business sustainability analytics sederhana (score, outlook, tren) — hanya jika data historis memadai
+	Could Have
+	Survival analysis dan prediksi time-to-event risiko penutupan usaha
+	5. User Persona
+5.1 Persona 1: Admin Bappenda
+Aspek
+	Deskripsi
+	Background
+	Pegawai struktural Bappenda yang bertanggung jawab atas administrasi data wajib pajak PBJT dan pelaporan kinerja penerimaan daerah. Memiliki pemahaman regulasi pajak daerah namun keterbatasan literasi teknis data science.
+	Aktivitas
+	Mengelola data master venue, memantau ringkasan potensi pajak wilayah, menyusun laporan berkala untuk pimpinan, serta menugaskan petugas pengawasan berdasarkan hasil analisis sistem.
+	Kebutuhan
+	Dashboard ringkas yang mudah dipahami, kemampuan impor data secara massal (bulk import), serta laporan yang dapat diekspor untuk keperluan rapat/pelaporan.
+	Pain Point
+	Data venue dan pajak tersebar di berbagai sumber; sulit melihat gambaran menyeluruh potensi pajak wilayah secara cepat.
+	Goal
+	Mendapatkan visibilitas menyeluruh atas potensi dan risiko pajak PBJT venue padel di wilayah kerjanya untuk mendukung pengambilan keputusan.
+	 
+5.2 Persona 2: Petugas Pengawasan Pajak
+Aspek
+	Deskripsi
+	Aktivitas Harian
+	Melakukan verifikasi lapangan terhadap wajib pajak, memeriksa kesesuaian laporan omzet, dan menindaklanjuti temuan indikasi ketidaksesuaian pembayaran pajak.
+	Workflow
+	Menerima penugasan → meninjau profil dan skor risiko venue pada sistem → melakukan kunjungan/verifikasi lapangan → mencatat hasil temuan.
+	Informasi yang Dibutuhkan
+	Ranking wajib pajak berisiko tinggi, faktor-faktor yang mendasari anomaly score, lokasi venue pada peta, serta riwayat pembayaran pajak.
+	Pain Point
+	Tidak memiliki dasar objektif untuk menentukan venue mana yang perlu diprioritaskan untuk diperiksa lebih dahulu.
+	Goal
+	Memprioritaskan kunjungan pengawasan pada wajib pajak dengan indikasi risiko tertinggi secara efisien dan berbasis data.
+	6. User Journey Map
+Alur penggunaan sistem secara umum mengikuti tahapan berikut:
+  [Login]
+          |
+          v
+   [Dashboard Utama]
+          |
+          v
+   [Input / Import Data Venue]
+          |
+          v
+   [Integrasi ZNT (Spasial)]
+          |
+          v
+   [Estimasi Omzet (ML)]
+          |
+          v
+   [Perhitungan PBJT]
+          |
+          v
+   [Deteksi Anomali]
+          |
+          v
+   [Analisis Keberlanjutan Usaha]
+          |
+          v
+   [Dashboard Risiko & Sustainability]
+          |
+          v
+   [Prioritas Pengawasan Lapangan]
+Tahap
+	Penjelasan
+	Login
+	Pengguna melakukan autentikasi sesuai peran (Admin Bappenda / Petugas Pengawasan).
+	Dashboard Utama
+	Menampilkan ringkasan total venue, total potensi omzet, total potensi PBJT, dan jumlah anomali terdeteksi.
+	Input/Import Data Venue
+	Admin menambahkan data venue baru secara manual atau melalui impor berkas (CSV/Excel).
+	Integrasi ZNT
+	Sistem mencocokkan koordinat venue dengan data Zona Nilai Tanah untuk memperoleh faktor ekonomi lokasi.
+	Estimasi Omzet
+	Model machine learning menghasilkan estimasi omzet bulanan berdasarkan karakteristik venue dan lokasi.
+	Perhitungan PBJT
+	Sistem menghitung estimasi PBJT dari hasil estimasi omzet menggunakan tarif yang berlaku.
+	Deteksi Anomali
+	Sistem membandingkan estimasi PBJT dengan pembayaran aktual dan menghasilkan anomaly score serta kategori risiko.
+	Analisis Keberlanjutan Usaha
+	Jika data historis memadai, sistem menghasilkan Sustainability Score dan business outlook berbasis tren.
+	Dashboard Risiko & Sustainability
+	Menyajikan hasil analisis anomali dan keberlanjutan usaha dalam bentuk grafik dan peta interaktif.
+	Prioritas Pengawasan
+	Petugas menggunakan ranking risiko untuk menentukan urutan prioritas kunjungan/pemeriksaan lapangan.
+	7. Functional Requirements
+Module 1: Authentication & User Management
+•     Login menggunakan username/email dan password, dengan mekanisme session/token (JWT).
+•     Role management dengan minimal tiga peran: Admin Bappenda, Petugas Pengawasan Pajak, dan Viewer.
+•     Authorization berbasis peran (Role-Based Access Control) yang membatasi akses fitur sesuai peran pengguna.
+Module 2: Venue Data Management
+Fitur
+•     Input data venue baru.
+•     Edit data venue yang sudah ada.
+•     Hapus (delete) data venue, dengan mekanisme soft-delete untuk audit trail.
+•     Impor dataset venue secara massal melalui berkas CSV/Excel.
+Field Data Venue
+Field
+	Tipe Data
+	Keterangan
+	Nama Venue
+	String
+	Nama usaha venue padel
+	Lokasi
+	String
+	Alamat lengkap venue
+	Latitude
+	Decimal
+	Koordinat lintang lokasi venue
+	Longitude
+	Decimal
+	Koordinat bujur lokasi venue
+	Jumlah Court
+	Integer
+	Jumlah lapangan padel yang dioperasikan
+	Harga Sewa
+	Decimal
+	Harga sewa per jam/sesi (Rupiah)
+	Jam Operasional
+	String/Time Range
+	Jam buka-tutup operasional harian
+	Hari Operasi
+	String
+	Hari-hari operasional dalam seminggu
+	Module 3: GIS & ZNT Integration
+•     Mapping lokasi venue pada peta interaktif berbasis koordinat latitude/longitude.
+•     Integrasi koordinat venue dengan basis data spasial Zona Nilai Tanah (ZNT) menggunakan operasi spatial join.
+•     Spatial analysis untuk menentukan wilayah administratif dan faktor ekonomi lokasi tempat venue berada.
+Output Modul
+Output
+	Keterangan
+	Nilai ZNT
+	Nilai Zona Nilai Tanah pada lokasi venue (Rp/m²)
+	Wilayah
+	Kelurahan/kecamatan tempat venue berada
+	Faktor Ekonomi Lokasi
+	Indikator turunan (mis. kategori zona: premium/menengah/reguler) berdasarkan ZNT
+	Module 4: Revenue Estimation Engine
+Input
+•     Jumlah court, harga sewa, jam operasional, hari operasi, nilai ZNT, dan lokasi/wilayah.
+Proses
+  Feature Engineering  -->  Machine Learning Model  -->  Prediction
+Output
+Estimasi omzet bulanan venue dalam satuan Rupiah, disertai rentang estimasi (confidence interval sederhana) apabila memungkinkan.
+Module 5: PBJT Estimation Engine
+Formula
+  PBJT = Estimasi Omzet Bulanan  x  Tarif PBJT
+Parameter, Input, dan Output
+Komponen
+	Keterangan
+	Parameter
+	Tarif PBJT sesuai regulasi daerah yang berlaku untuk sektor jasa olahraga/rekreasi (dapat dikonfigurasi admin).
+	Input
+	Estimasi omzet bulanan dari Revenue Estimation Engine (Module 4).
+	Output
+	Nilai estimasi PBJT bulanan yang menjadi acuan pembanding terhadap pembayaran aktual.
+	Module 6: Anomaly Detection System
+Tujuan: mendeteksi ketidaksesuaian antara potensi PBJT hasil estimasi sistem dengan nilai PBJT yang benar-benar dibayarkan oleh wajib pajak.
+Input
+•     Estimasi omzet, estimasi PBJT, dan PBJT aktual (dari laporan/pembayaran wajib pajak).
+Output
+•     Anomaly score (nilai numerik tingkat kejanggalan).
+•     Risk category (kategori risiko).
+•     Ranking wajib pajak berdasarkan tingkat risiko.
+Kategori Risiko
+Kategori
+	Deskripsi
+	Normal
+	Selisih antara estimasi dan pembayaran aktual berada dalam rentang wajar.
+	Monitoring
+	Terdapat selisih yang perlu dipantau namun belum mengindikasikan pelanggaran signifikan.
+	High Risk
+	Selisih signifikan yang mengindikasikan kemungkinan underreporting dan perlu diprioritaskan untuk verifikasi lapangan.
+	Module 7: Business Sustainability Analytics (Should Have)
+Tujuan: memberikan indikasi prospek keberlanjutan usaha venue berdasarkan tren performa yang tersedia — bukan menjamin umur perusahaan secara pasti.
+Input (Bergantung Ketersediaan Data Historis)
+•     Estimasi omzet per periode dan omzet laporan per periode.
+•     PBJT pembayaran per periode dan tren pertumbuhan/penurunan.
+•     Jumlah court, harga sewa, jam operasional, lokasi dan ZNT.
+•     Anomaly score historis.
+Proses
+  Historical Trend Analysis --> Feature Engineering --> Sustainability Scoring / Forecasting
+Output
+•     Sustainability Score (skala 0-100).
+•     Business Outlook: Positif / Stabil / Waspada.
+•     Tren performa usaha dan indikasi risiko penurunan.
+•     Proyeksi jangka pendek-menengah (1-3 tahun), hanya jika kualitas dan panjang data historis memadai.
+Catatan Penting
+•     Sistem tidak boleh mengklaim secara deterministik bahwa suatu venue akan bertahan selama X tahun.
+•     Jika data historis belum cukup, sistem menampilkan status "Data belum memadai untuk proyeksi" dan hanya menyajikan analisis tren/deskriptif.
+•     Untuk MVP 14 minggu, modul ini diposisikan sebagai Should Have/prototype dan tidak boleh mengorbankan penyelesaian fitur inti (estimasi PBJT dan deteksi anomali).
+Module 8: Dashboard Analytics
+Dashboard Utama
+•     Total venue terdaftar.
+•     Total omzet potensial (agregat).
+•     Total PBJT potensial (agregat).
+•     Jumlah anomali terdeteksi.
+Grafik
+•     Tren omzet dari waktu ke waktu.
+•     Distribusi risiko (Normal/Monitoring/High Risk).
+•     Tren Sustainability Score / business outlook (jika tersedia).
+Peta (Map)
+•     Sebaran lokasi venue pada peta interaktif.
+•     Visualisasi zona risiko berbasis warna (heat/choropleth sederhana).
+Halaman Detail
+•     Profil venue lengkap.
+•     Hasil prediksi omzet dan estimasi PBJT.
+•     Status risiko dan anomaly score.
+•     Sustainability Score dan business outlook (jika tersedia).
+
+
+Modul PRD
+	Lokasi Kode
+	Status
+	M1 Auth & User Mgmt
+	routes/auth.py, core/security.py, deps.py, models/user.py, schemas/user.py
+	OK — JWT HS256, bcrypt, RBAC 3 role
+	M2 Venue Data Mgmt
+	routes/venues.py, services/venue_service.py, models/venue.py, schemas/venue.py
+	OK — CRUD + soft-delete + import CSV/XLSX 5MB/10k rows + auto spatial join
+	M3 GIS & ZNT
+	routes/spatial.py, services/spatial_service.py, models/spatial_znt.py
+	OK — ST_Contains PostGIS, GET /znt/{id}, POST /znt/rerun (admin)
+	M4 Revenue Engine
+	ml/inference/revenue_model.py + ml/training/train_revenue_model.py
+	Heuristik fallback aktif; artifact XGBoost belum ada
+	M5 PBJT Engine
+	routes/revenue.py + routes/tax.py, core/config.PBJT_TAX_RATE=0.10
+	OK — PBJT=omzet*tarif, tarif dari env
+	M6 Anomaly Detection
+	ml/inference/anomaly_model.py + routes/anomaly.py + training/train_anomaly_model.py
+	Rule-based fallback (ratio 0.8/0.5); ranking high-risk OK
+	M7 Sustainability (Should Have)
+	ml/inference/sustainability_model.py + routes/sustainability.py
+	Rule-based tren, MIN_PERIODS=3, tidak klaim deterministik — sesuai PRD
+	M8 Dashboard Analytics
+	routes/dashboard.py, services/dashboard_service.py, frontend DashboardPage/MapPage
+	summary + trend/omzet OK; peta Leaflet ada, grafik Recharts stub
+	
+
+8. Machine Learning Requirements
+Model 1: Revenue Prediction Model
+Tujuan: memprediksi estimasi omzet bulanan venue padel.
+Komponen
+	Keterangan
+	Dataset
+	Data venue (karakteristik operasional) yang digabungkan dengan data spasial ZNT; dilengkapi data omzet historis/proksi bila tersedia untuk pelatihan awal.
+	Feature
+	Jumlah court, harga sewa, jam operasional, hari operasi, nilai ZNT, wilayah/lokasi.
+	Target Variable
+	Omzet bulanan venue (Rupiah).
+	Feature Engineering
+	Normalisasi harga sewa, encoding wilayah, perhitungan total jam operasional mingguan, kategori zona ekonomi berbasis ZNT.
+	Algoritma
+	XGBoost Regression (direkomendasikan); dibandingkan dengan baseline regresi linier untuk validasi kewajaran.
+	Training Workflow
+	Split data train/test (mis. 80/20), cross-validation, hyperparameter tuning, evaluasi pada data uji.
+	Evaluation Metrics
+	MAE (Mean Absolute Error), RMSE (Root Mean Squared Error), R2 Score.
+	Model 2: Anomaly Detection Model
+Tujuan: mendeteksi pembayaran pajak yang bersifat abnormal dibandingkan estimasi potensi.
+Komponen
+	Keterangan
+	Dataset
+	Selisih/rasio antara estimasi PBJT (Module 5) dan PBJT aktual per wajib pajak.
+	Feature
+	Rasio pembayaran terhadap estimasi, selisih absolut, tren pembayaran antar periode (jika tersedia).
+	Metode
+	Isolation Forest (direkomendasikan) untuk mendeteksi outlier tanpa memerlukan label anomali eksplisit.
+	Threshold
+	Ambang batas anomaly score ditentukan melalui analisis distribusi skor pada data historis, dikalibrasi bersama tim/pembimbing.
+	Output
+	Anomaly score, kategori risiko (Normal/Monitoring/High Risk), dan ranking wajib pajak.
+	Model 3: Business Sustainability Model (Should Have / Prototype)
+Tujuan: mengestimasi sustainability score dan outlook keberlanjutan usaha berdasarkan pola historis yang tersedia.
+Komponen
+	Keterangan
+	Minimum Kebutuhan Data Historis
+	Idealnya minimal beberapa periode (mis. bulanan) data omzet dan pembayaran pajak per venue; jika tidak tersedia, modul membatasi diri pada analisis deskriptif.
+	Feature
+	Tren pertumbuhan omzet, tren anomaly score, stabilitas jam operasional, faktor lokasi/ZNT.
+	Target/Proxy Target
+	Tidak menggunakan target biner "tutup/tidak tutup" (data belum tersedia); menggunakan skor komposit sebagai proksi kesehatan usaha.
+	Metode Forecasting/Scoring
+	Trend analysis dan rule-based/weighted sustainability scoring yang transparan sebagai pendekatan MVP; evaluasi model forecasting/regresi sederhana hanya jika data mencukupi.
+	Validasi
+	Pemeriksaan konsistensi skor terhadap tren historis yang diketahui; review kualitatif bersama pembimbing/pemangku kepentingan.
+	Confidence/Uncertainty
+	Skor disertai indikator tingkat keyakinan (mis. tinggi/sedang/rendah) berdasarkan panjang dan kelengkapan data historis yang tersedia.
+	Keterbatasan Interpretasi
+	Skor bersifat indikatif, bukan jaminan; sistem secara eksplisit menghindari klaim deterministik terkait usia/keberlangsungan usaha.
+	Output
+•     Sustainability Score (skala 0-100).
+•     Business Outlook (Positif/Stabil/Waspada).
+•     Trend direction (naik/stabil/turun).
+•     Confidence level.
+•     Faktor utama yang memengaruhi skor.
+9. Data Requirements
+9.1 Venue Dataset
+Field
+	Tipe Data
+	venue_id
+	String/UUID (Primary Key)
+	nama
+	String
+	lokasi
+	String
+	latitude
+	Decimal
+	longitude
+	Decimal
+	jumlah_court
+	Integer
+	harga_sewa
+	Decimal
+	jam_operasi
+	String/Time Range
+	rating
+	Decimal (opsional)
+	9.2 Spatial Dataset
+Field
+	Tipe Data
+	latitude
+	Decimal
+	longitude
+	Decimal
+	wilayah
+	String
+	polygon
+	Geometry (PostGIS)
+	ZNT
+	Decimal (Rp/m²)
+	9.3 Tax Dataset
+Field
+	Tipe Data
+	Keterangan
+	wajib_pajak
+	String/FK ke venue_id
+	Identitas wajib pajak
+	omzet_laporan
+	Decimal
+	Omzet yang dilaporkan wajib pajak
+	PBJT_pembayaran
+	Decimal
+	Nilai PBJT yang benar-benar dibayarkan
+	periode
+	Date/String
+	Periode pelaporan (bulanan)
+	status_usaha
+	String (opsional)
+	Status operasional usaha, jika tersedia
+	tanggal_mulai_usaha
+	Date (opsional)
+	Tanggal mulai operasional usaha
+	tanggal_tutup_usaha
+	Date (opsional)
+	Untuk pengembangan survival analysis di masa depan
+	10. System Architecture
+10.1 Komponen Teknologi
+Layer
+	Teknologi
+	Frontend
+	React (Progressive Web Application)
+	Backend
+	FastAPI (Python)
+	Database
+	PostgreSQL + ekstensi PostGIS
+	Machine Learning
+	Python, Scikit-learn, XGBoost
+	GIS
+	GeoPandas (pemrosesan spasial), Leaflet (visualisasi peta)
+	10.2 Diagram Alur Sistem
+   [User: Admin / Petugas]
+                 |
+                 v
+    [Frontend - React PWA]
+                 |
+                 v
+    [Backend API - FastAPI]
+             |             |
+             v             v
+   [Database]   [ML Service]
+   PostgreSQL   (Scikit-learn,
+   + PostGIS     XGBoost)
+             \             /
+              v       v
+          [Dashboard Analytics]
+Backend API bertindak sebagai orkestrator: menerima permintaan dari frontend, melakukan query ke database (termasuk operasi spasial via PostGIS), memanggil ML service untuk inferensi (estimasi omzet, anomaly score, sustainability score), lalu mengembalikan hasil gabungan ke frontend untuk ditampilkan pada dashboard.
+11. Database Design
+11.1 Daftar Tabel Konseptual
+Tabel
+	Deskripsi Singkat
+	users
+	Menyimpan akun pengguna sistem beserta peran (role).
+	venues
+	Menyimpan data master venue padel.
+	spatial_znt
+	Menyimpan data Zona Nilai Tanah per wilayah/polygon.
+	revenue_prediction
+	Menyimpan hasil estimasi omzet dari model ML per venue per periode.
+	tax_payment
+	Menyimpan data laporan omzet dan pembayaran PBJT aktual per periode.
+	anomaly_result
+	Menyimpan anomaly score, kategori risiko, dan ranking per venue per periode.
+	sustainability_result
+	Menyimpan sustainability score, outlook, dan tren per venue (jika data historis memadai).
+	11.2 Relasi Antar Tabel (ERD Konseptual)
+Tabel
+	Primary Key
+	Foreign Key
+	Relasi
+	users
+	user_id
+	-
+	1 users : N aktivitas audit (opsional, pengembangan lanjutan)
+	venues
+	venue_id
+	znt_id → spatial_znt
+	1 spatial_znt : N venues (banyak venue dapat berada dalam satu zona ZNT)
+	spatial_znt
+	znt_id
+	-
+	Referensi wilayah/zona nilai tanah
+	revenue_prediction
+	prediction_id
+	venue_id → venues
+	1 venues : N revenue_prediction (satu venue punya banyak periode prediksi)
+	tax_payment
+	payment_id
+	venue_id → venues
+	1 venues : N tax_payment (riwayat pembayaran per periode)
+	anomaly_result
+	anomaly_id
+	venue_id → venues, payment_id → tax_payment
+	1 tax_payment : 1 anomaly_result (hasil deteksi per periode pembayaran)
+	sustainability_result
+	sustainability_id
+	venue_id → venues
+	1 venues : N sustainability_result (skor dapat dihitung ulang per periode evaluasi)
+	  spatial_znt (1) ---- (N) venues (1) ---- (N) revenue_prediction
+                                 |
+                                 |---- (N) tax_payment (1) ---- (1) anomaly_result
+                                 |
+                                 |---- (N) sustainability_result
+
+   users (peran: admin, petugas, viewer) mengakses seluruh entitas di atas
+   sesuai hak akses (RBAC) masing-masing.
+12. UI/UX Requirement
+12.1 Login Page
+Aspek
+	Keterangan
+	Komponen
+	Form input email/username dan password, tombol login, pesan kesalahan validasi.
+	Informasi yang Ditampilkan
+	Logo/nama sistem, keterangan versi/instansi.
+	User Interaction
+	Validasi input real-time, redirect ke dashboard sesuai peran setelah login berhasil.
+	 
+12.2 Dashboard Page
+Aspek
+	Keterangan
+	Komponen
+	Kartu ringkasan (total venue, total omzet potensial, total PBJT potensial, jumlah anomali), grafik tren, grafik distribusi risiko, mini-map.
+	Informasi yang Ditampilkan
+	Ringkasan agregat seluruh venue serta tren performa dan risiko secara keseluruhan.
+	User Interaction
+	Filter berdasarkan periode dan wilayah; klik pada elemen grafik/kartu untuk melihat detail lanjutan.
+	 
+12.3 Map Page
+Aspek
+	Keterangan
+	Komponen
+	Peta interaktif (Leaflet) dengan marker venue, layer zona risiko, kontrol zoom/filter.
+	Informasi yang Ditampilkan
+	Sebaran lokasi venue, warna marker sesuai kategori risiko, informasi singkat saat marker diklik (popup).
+	User Interaction
+	Klik marker untuk membuka ringkasan venue; filter peta berdasarkan kategori risiko atau wilayah.
+	 
+12.4 Venue Detail Page
+Aspek
+	Keterangan
+	Komponen
+	Profil venue, kartu hasil prediksi omzet, kartu estimasi PBJT, indikator anomaly score, kartu sustainability score/outlook, grafik tren historis.
+	Informasi yang Ditampilkan
+	Seluruh data dan hasil analisis terkait satu venue tertentu secara lengkap.
+	User Interaction
+	Navigasi antar-tab (profil, prediksi, pajak, risiko, sustainability); ekspor ringkasan venue (opsional).
+	13. Non-Functional Requirement
+13.1 Performance
+•     Response time: sebagian besar permintaan API selesai dalam < 2 detik pada kondisi data uji skala magang.
+•     Scalability: arsitektur backend dan database dirancang modular agar dapat menampung penambahan jumlah venue dan wilayah tanpa perombakan besar.
+13.2 Security
+•     Authentication: login berbasis token (JWT) dengan masa berlaku sesi yang wajar.
+•     Authorization: pembatasan akses fitur dan data berdasarkan peran pengguna (RBAC).
+•     Data Protection: enkripsi password (hashing), koneksi HTTPS, dan validasi input untuk mencegah injeksi data.
+13.3 Maintainability
+•     Modular architecture: pemisahan jelas antara frontend, backend API, dan ML service agar mudah dipelihara/dikembangkan.
+•     Documentation: dokumentasi API, skema database, dan panduan menjalankan model ML disusun sebagai bagian dari deliverable akhir magang.
+13.4 Usability
+•     Dashboard dirancang user-friendly bagi pengguna non-teknis (Admin Bappenda, Petugas Pengawasan) dengan istilah yang mudah dipahami dan visualisasi yang jelas.
+14. Development Roadmap
+14.1 Ringkasan Bulanan
+Bulan
+	Fokus
+	Output
+	September 2026
+	Research & Requirement
+	Requirement analysis, system design
+	Oktober 2026
+	Database + Backend + ML
+	Database, API, model ML utama, eksperimen sustainability scoring berbasis tren (jika data historis tersedia)
+	November 2026
+	Frontend + Dashboard Integration
+	Dashboard, visualisasi GIS, visualisasi sustainability score/business outlook (Should Have)
+	Desember 2026
+	Testing + Deployment + Documentation
+	Testing, deployment, laporan akhir
+	14.2 Rincian Sprint Mingguan (14 Minggu)
+Sprint
+	Periode
+	Fokus Utama
+	Deliverable
+	Status
+	Sprint 1
+	1-7 Sep 2026
+	Onboarding & analisis kebutuhan
+	Dokumen requirement awal, akses data/sumber ZNT
+	Completed
+	Sprint 2
+	8-14 Sep 2026
+	Riset domain pajak PBJT & studi literatur ML
+	Rangkuman regulasi PBJT, referensi model estimasi omzet
+	In progress
+	Sprint 3
+	15-21 Sep 2026
+	Perancangan sistem (arsitektur & PRD)
+	PRD final, diagram arsitektur, ERD awal
+	Not started
+	Sprint 4
+	22-28 Sep 2026
+	Perancangan UI/UX (wireframe)
+	Wireframe/mockup Login, Dashboard, Map, Venue Detail
+	Not started
+	Sprint 5
+	29 Sep-5 Okt 2026
+	Setup database & skema tabel
+	Database PostgreSQL + PostGIS terisi skema awal
+	Not started
+	Sprint 6
+	6-12 Okt 2026
+	Pengumpulan & pembersihan data venue/ZNT
+	Dataset venue dan spasial siap pakai
+	Not started
+	Sprint 7
+	13-19 Okt 2026
+	Pengembangan backend API dasar
+	Endpoint CRUD venue & autentikasi
+	Not started
+	Sprint 8
+	20-26 Okt 2026
+	Pengembangan Revenue Prediction Model
+	Model XGBoost terlatih + evaluasi awal (MAE/RMSE/R2)
+	Not started
+	Sprint 9
+	27 Okt-2 Nov 2026
+	Pengembangan Anomaly Detection Model
+	Model Isolation Forest + threshold awal
+	Not started
+	Sprint 10
+	3-9 Nov 2026
+	Integrasi ML service ke backend API
+	Endpoint prediksi omzet & anomaly score berfungsi
+	Not started
+	Sprint 11
+	10-16 Nov 2026
+	Pengembangan frontend (Login, Dashboard)
+	Halaman Login dan Dashboard terhubung ke API
+	Not started
+	Sprint 12
+	17-23 Nov 2026
+	Pengembangan frontend (Map & Venue Detail)
+	Halaman Map dan Venue Detail berfungsi penuh
+	Not started
+	Sprint 13
+	24-30 Nov 2026
+	Eksperimen sustainability scoring & polishing UI
+	Prototipe sustainability score/outlook (Should Have), perbaikan UI
+	Not started
+	Sprint 14
+	1-4 Des 2026
+	Testing, deployment, dan dokumentasi akhir
+	Hasil UAT, sistem ter-deploy, laporan akhir magang
+	Not started
+	15. MVP Definition
+Prioritas
+	Fitur
+	Must Have
+	Data management, GIS & ZNT integration, revenue estimation, PBJT estimation, anomaly detection, dashboard risiko
+	Should Have
+	Business Sustainability Analytics sederhana, Sustainability Score, business outlook dan tren performa, proyeksi 1-3 tahun (hanya jika data historis memadai)
+	Could Have
+	Survival analysis untuk estimasi probabilitas keberlangsungan usaha, prediksi time-to-event/risiko penutupan usaha (setelah tersedia dataset historis yang memadai)
+	Ruang lingkup di atas disusun agar realistis untuk diselesaikan dalam periode magang 14 minggu, dengan prioritas utama pada fitur inti (Must Have) yang menjadi nilai utama sistem: estimasi potensi pajak dan deteksi anomali. Fitur Should Have dan Could Have akan dikembangkan secara bertahap sepanjang kapasitas waktu dan ketersediaan data memungkinkan, tanpa mengorbankan kualitas fitur inti.
+16. Future Development
+•     Integrasi API Bappenda untuk sinkronisasi data wajib pajak secara langsung.
+•     Real-time monitoring transaksi dan okupansi venue.
+•     AI assistant pajak untuk membantu petugas menjawab pertanyaan terkait regulasi dan hasil analisis.
+•     Model prediksi penerimaan pajak daerah pada tingkat agregat/wilayah.
+•     Model survival analysis untuk estimasi probabilitas keberlangsungan usaha berdasarkan data tanggal buka/tutup yang memadai.
+•     Early warning system atas penurunan kesehatan usaha wajib pajak.
+•     Ekspansi cakupan ke sektor pajak PBJT lain (mis. kolam renang, gym, karaoke, bioskop).

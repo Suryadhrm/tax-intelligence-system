@@ -1,2 +1,6 @@
-from sqlalchemy.orm import declarative_base
-Base=declarative_base()
+from sqlalchemy.orm import DeclarativeBase
+
+
+class Base(DeclarativeBase):
+    """Shared declarative base for all ORM models (users, venues, spatial_znt, ...)."""
+    pass

@@ -1,32 +1,42 @@
-# Tax Intelligence System — Venue Padel Jakarta Barat
+# Tax Intelligence System
 
-PWA untuk estimasi potensi PBJT, deteksi anomali, dan analitik sustainability venue padel Jakbar.
-Stack: React PWA + FastAPI + PostgreSQL+PostGIS + XGBoost + Isolation Forest + Leaflet.
+Sistem Analitik Potensi Pendapatan dan Deteksi Anomali Pajak PBJT Venue Padel
+Jakarta Barat — proyek magang untuk Bappenda (1 Sep – 4 Des 2026).
 
-## Struktur → Modul PRD
+Lihat `docs/` untuk PRD lengkap.
 
-| Modul PRD | Route | Service | Model/Table | ML |
-|---|---|---|---|---|
-| M1 Auth & User Mgmt | `backend/app/api/v1/routes/auth.py` | `services/auth_service.py` | `models/user.py` | — |
-| M2 Venue Mgmt | `venues.py` | `venue_service.py` | `models/venue.py` | — |
-| M3 GIS & ZNT | `spatial.py` | `spatial_service.py` | `models/spatial_znt.py` | GeoPandas/PostGIS |
-| M4 Revenue Estimation | `revenue.py` | `services/revenue_service.py` | `models/revenue_prediction.py` | `ml/inference/revenue.py` + `ml/scripts/train_revenue_model.py` |
-| M5 PBJT Estimation | `tax.py` | `tax_service.py` | `models/tax_payment.py` | `pbjt = omzet * tarif` |
-| M6 Anomaly Detection | `anomaly.py` | `anomaly_service.py` | `models/anomaly_result.py` | `ml/inference/anomaly.py` (Isolation Forest) |
-| M7 Sustainability | `sustainability.py` | `sustainability_service.py` | `models/sustainability_result.py` | `ml/inference/sustainability.py` (weighted score) |
-| M8 Dashboard | `dashboard.py` | `dashboard_service.py` | agregat semua | — |
+## Struktur Repo
 
-## Quickstart
-```bash
-cp .env.example .env
-docker compose up --build
-# backend http://localhost:8000/docs
-# frontend http://localhost:5173
+```
+backend/     FastAPI API — routes, models (ORM), schemas, services, ML inference (serving)
+frontend/    React PWA — Login, Dashboard, Map, Venue Detail
+ml/          Notebook & script eksperimen/training model (terpisah dari kode serving)
+docs/        Dokumen perencanaan (PRD, dsb.)
 ```
 
-## Spec-driven workflow
-Lihat `tasks/capability-map.md` → `tasks/specs/SPEC-*.md` → `tasks/plan.md` → `tasks/todo.md`.
+Setiap folder (`backend/`, `frontend/`, `ml/`) punya README sendiri dengan
+instruksi setup.
 
-## Prinsip ML
-`backend/app/ml/inference/` = serving + fallback heuristik (API tetap jalan sebelum model dilatih).
-`ml/` = training & artifacts; tidak jadi microservice terpisah di MVP.
+## Menjalankan Semua Layanan Sekaligus (Docker)
+
+```bash
+docker compose up --build
+```
+
+- Backend API: http://localhost:8000/docs
+- Frontend: http://localhost:3000
+- Database: PostgreSQL + PostGIS di port 5432
+
+## Pemetaan Modul PRD -> Kode
+
+| Modul PRD | Lokasi Kode |
+|---|---|
+| Module 1: Authentication & User Management | `backend/app/api/v1/routes/auth.py`, `app/core/security.py` |
+| Module 2: Venue Data Management | `backend/app/api/v1/routes/venues.py`, `app/services/venue_service.py` |
+| Module 3: GIS & ZNT Integration | `backend/app/api/v1/routes/spatial.py`, `app/services/spatial_service.py` |
+| Module 4: Revenue Estimation Engine | `backend/app/ml/inference/revenue_model.py` |
+| Module 5: PBJT Estimation Engine | `backend/app/api/v1/routes/revenue.py` |
+| Module 6: Anomaly Detection System | `backend/app/ml/inference/anomaly_model.py` |
+| Module 7: Business Sustainability Analytics | `backend/app/ml/inference/sustainability_model.py` |
+| Module 8: Dashboard Analytics | `backend/app/api/v1/routes/dashboard.py`, `frontend/src/pages/DashboardPage.jsx` |
+| Model training (Section 8) | `ml/training/*.py` |

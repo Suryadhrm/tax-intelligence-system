@@ -1,0 +1,9 @@
+{
+  "short_name": "TaxIntel",
+  "name": "Tax Intelligence System",
+  "icons": [],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#1F3864",
+  "background_color": "#ffffff"
+}

@@ -1,1 +1,0 @@
-# notebooks EDA & eksperimen

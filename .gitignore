@@ -1,17 +1,23 @@
-# env & secrets
-.env
-*.pem
-# python
+# Python
 __pycache__/
 *.pyc
-.venv/
 venv/
-# node
+.env
+
+# Node
 node_modules/
-dist/
-# artifacts
-ml/artifacts/*.pkl
-ml/artifacts/*.joblib
-# os
+build/
+.env.local
+
+# Data & model artifacts (kept out of git — large/binary)
+ml/data/raw/*
+ml/data/processed/*
+!ml/data/raw/.gitkeep
+!ml/data/processed/.gitkeep
+backend/app/ml/inference/artifacts/*
+!backend/app/ml/inference/artifacts/.gitkeep
+
+# OS / editor
 .DS_Store
-Thumbs.db
+.vscode/
+.idea/
