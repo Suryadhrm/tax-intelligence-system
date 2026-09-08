@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class RevenuePredictionOut(BaseModel):
@@ -6,9 +6,7 @@ class RevenuePredictionOut(BaseModel):
     periode: str
     estimasi_omzet: float
     model_version: str
-
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class PBJTEstimationOut(BaseModel):

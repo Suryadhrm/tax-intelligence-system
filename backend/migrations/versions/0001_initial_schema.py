@@ -43,6 +43,13 @@ def upgrade() -> None:
         sa.Column("polygon", Geometry(geometry_type="POLYGON", srid=4326), nullable=True),
     )
 
+    op.create_index(
+        "ix_spatial_znt_polygon_gist",
+        "spatial_znt",
+        ["polygon"],
+        postgresql_using="gist",
+    )
+
     op.create_table(
         "venues",
         sa.Column("venue_id", sa.String(36), primary_key=True),
@@ -115,6 +122,7 @@ def downgrade() -> None:
     op.drop_table("tax_payment")
     op.drop_table("revenue_prediction")
     op.drop_table("venues")
+    op.drop_index("ix_spatial_znt_polygon_gist", table_name="spatial_znt")
     op.drop_table("spatial_znt")
     op.drop_index("ix_users_email", table_name="users")
     op.drop_table("users")

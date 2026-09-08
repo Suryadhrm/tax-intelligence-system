@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class SustainabilityResultOut(BaseModel):
@@ -8,6 +8,4 @@ class SustainabilityResultOut(BaseModel):
     trend_direction: str | None = None
     confidence_level: str
     note: str = "Skor bersifat indikatif, bukan jaminan keberlangsungan usaha."
-
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
