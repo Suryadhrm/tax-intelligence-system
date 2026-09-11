@@ -8,7 +8,6 @@ import enum
 class UserRole(str, enum.Enum):
     ADMIN_BAPPENDA = "admin_bappenda"
     PETUGAS_PENGAWASAN = "petugas_pengawasan"
-    VIEWER = "viewer"
 
 
 class User(Base):
@@ -19,5 +18,5 @@ class User(Base):
     full_name: Mapped[str] = mapped_column(String(150))
     email: Mapped[str] = mapped_column(String(150), unique=True, index=True)
     hashed_password: Mapped[str] = mapped_column(String(255))
-    role: Mapped[UserRole] = mapped_column(Enum(UserRole), default=UserRole.VIEWER)
+    role: Mapped[UserRole] = mapped_column(Enum(UserRole), default=UserRole.PETUGAS_PENGAWASAN)
     is_active: Mapped[bool] = mapped_column(default=True)
