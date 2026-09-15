@@ -11,6 +11,11 @@ class VenueBase(BaseModel):
     jam_operasi: str = Field(min_length=1, max_length=100)
     hari_operasi: str = Field(min_length=1, max_length=100)
     rating: float | None = Field(default=None, ge=0, le=5)
+    nopd: str | None = None
+    nop: str | None = None
+    kota_administrasi: str | None = None
+    kecamatan: str | None = None
+    kelurahan: str | None = None
 
 
 class VenueCreate(VenueBase):

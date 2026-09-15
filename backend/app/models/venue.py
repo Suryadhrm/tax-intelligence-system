@@ -18,5 +18,10 @@ class Venue(Base):
     jam_operasi: Mapped[str] = mapped_column(String(100))
     hari_operasi: Mapped[str] = mapped_column(String(100))
     rating: Mapped[float | None] = mapped_column(Float, nullable=True)
+    nopd: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    nop: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    kota_administrasi: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    kecamatan: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    kelurahan: Mapped[str | None] = mapped_column(String(100), nullable=True)
     znt_id: Mapped[str | None] = mapped_column(String(36), ForeignKey("spatial_znt.znt_id"), nullable=True)
     is_deleted: Mapped[bool] = mapped_column(default=False)  # soft-delete for audit trail

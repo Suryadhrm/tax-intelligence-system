@@ -5,7 +5,7 @@ import Navbar from "../components/Navbar";
 import "leaflet/dist/leaflet.css";
 
 // Section 12.3 Map Page: venue markers colored by risk category (Module 8).
-const JAKARTA_BARAT_CENTER = [-6.1683, 106.7588];
+const DKI_JAKARTA_CENTER = [-6.2088, 106.8456];
 
 export default function MapPage() {
   const [venues, setVenues] = useState([]);
@@ -17,7 +17,7 @@ export default function MapPage() {
   return (
     <div className="map-page">
       <Navbar />
-      <MapContainer center={JAKARTA_BARAT_CENTER} zoom={12} style={{ height: "80vh" }}>
+      <MapContainer center={DKI_JAKARTA_CENTER} zoom={11} style={{ height: "80vh" }}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         {venues.map((v) => (
           <Marker key={v.venue_id} position={[v.latitude, v.longitude]}>

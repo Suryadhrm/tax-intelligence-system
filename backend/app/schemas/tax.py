@@ -1,14 +1,24 @@
 from datetime import date
 import re
-
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import AliasChoices, BaseModel, ConfigDict, Field, field_validator
 
 
 class TaxPaymentCreate(BaseModel):
     venue_id: str = Field(min_length=1)
+    nopd: str | None = None
     periode: date
     omzet_laporan: float = Field(ge=0)
-    pbjt_pembayaran: float = Field(ge=0)
+    dpp_pbjt: float | None = Field(default=None, ge=0)
+    tarif_pbjt: float | None = Field(default=None, ge=0, le=1)
+    pbjt_terutang: float | None = Field(default=None, ge=0)
+    pbjt_dibayar: float = Field(default=0, ge=0, validation_alias=AliasChoices("pbjt_dibayar", "pbjt_pembayaran"))
+    tanggal_lapor: date | None = None
+    tanggal_bayar: date | None = None
+    status_pembayaran: str | None = None
+
+    @property
+    def pbjt_pembayaran(self) -> float:
+        return self.pbjt_dibayar
 
     @field_validator("periode", mode="before")
     @classmethod

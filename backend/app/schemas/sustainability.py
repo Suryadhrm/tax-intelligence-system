@@ -5,6 +5,9 @@ class SustainabilityResultOut(BaseModel):
     venue_id: str
     sustainability_score: float | None = None
     business_outlook: str | None = None
+    potential_index: float | None = None
+    potential_category: str | None = None
+    factors: dict[str, float] | None = None
     trend_direction: str | None = None
     confidence_level: str
     note: str = "Skor bersifat indikatif, bukan jaminan keberlangsungan usaha."

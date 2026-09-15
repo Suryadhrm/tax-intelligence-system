@@ -20,4 +20,7 @@ class AnomalyResult(Base):
     payment_id: Mapped[str] = mapped_column(String(36), ForeignKey("tax_payment.payment_id"))
     anomaly_score: Mapped[float] = mapped_column(Float)
     risk_category: Mapped[RiskCategory] = mapped_column(Enum(RiskCategory))
+    gap: Mapped[float | None] = mapped_column(Float, nullable=True)
+    payment_ratio: Mapped[float | None] = mapped_column(Float, nullable=True)
+    reason: Mapped[str | None] = mapped_column(String(300), nullable=True)
     rank: Mapped[int | None] = mapped_column(nullable=True)
